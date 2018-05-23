@@ -83,24 +83,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
-static const char *colorname[] = {
-	/* solarized light */
-// 	"#eee8d5",  /*  0: black    */
-// 	"#dc322f",  /*  1: red      */
-// 	"#859900",  /*  2: green    */
-// 	"#b58900",  /*  3: yellow   */
-// 	"#268bd2",  /*  4: blue     */
-// 	"#d33682",  /*  5: magenta  */
-// 	"#2aa198",  /*  6: cyan     */
-// 	"#073642",  /*  7: white    */
-// 	"#fdf6e3",  /*  8: brblack  */
-// 	"#cb4b16",  /*  9: brred    */
-// 	"#93a1a1",  /* 10: brgreen  */
-// 	"#839496",  /* 11: bryellow */
-// 	"#657b83",  /* 12: brblue   */
-// 	"#6c71c4",  /* 13: brmagenta*/
-// 	"#586e75",  /* 14: brcyan   */
-// 	"#002b36",  /* 15: brwhite  */
+char *colorname[] = {
 	/* solarized dark */
 	"#073642",  /*  0: black    */
 	"#dc322f",  /*  1: red      */
@@ -118,6 +101,12 @@ static const char *colorname[] = {
 	"#6c71c4",  /* 13: brmagenta*/
 	"#93a1a1",  /* 14: brcyan   */
 	"#fdf6e3",  /* 15: brwhite  */
+
+	[255] = 0,
+
+	/* more colors can be added after 255 to use with DefaultXX */
+	"#cccccc",
+	"#555555",
 };
 
 
@@ -126,7 +115,7 @@ static const char *colorname[] = {
  * foreground, background, cursor, reverse cursor
  */
 unsigned int defaultfg = 0;
-unsigned int defaultbg = 7;
+unsigned int defaultbg = 15;
 static unsigned int defaultcs = 14;
 static unsigned int defaultrcs = 15;
 
@@ -187,6 +176,7 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ TERMMOD,              XK_I,           iso14755,       {.i =  0} },
+	{ XK_ANY_MOD,           XK_F6,          swapcolors,     {.i =  0} },
 };
 
 /*
@@ -457,7 +447,7 @@ static Key key[] = {
  * ButtonRelease and MotionNotify.
  * If no match is found, regular selection is used.
  */
-static uint selmasks[] = {
+uint selmasks[] = {
 	[SEL_RECTANGULAR] = Mod1Mask,
 };
 
@@ -465,7 +455,8 @@ static uint selmasks[] = {
  * Printable characters in ASCII, used to estimate the advance width
  * of single wide characters.
  */
-static char ascii_printable[] =
+char ascii_printable[] =
 	" !\"#$%&'()*+,-./0123456789:;<=>?"
 	"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
 	"`abcdefghijklmnopqrstuvwxyz{|}~";
+

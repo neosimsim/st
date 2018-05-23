@@ -56,6 +56,7 @@ static void selpaste(const Arg *);
 static void zoom(const Arg *);
 static void zoomabs(const Arg *);
 static void zoomreset(const Arg *);
+static void swapcolors(const Arg *);
 
 /* config.h for applying patches and the configuration. */
 #include "config.h"
@@ -306,6 +307,21 @@ zoomreset(const Arg *arg)
 		larg.f = defaultfontsize;
 		zoomabs(&larg);
 	}
+}
+
+/* The difference between dark and light scheme are the values of white and
+ * black for normal and bright. */
+void
+swapcolors(const Arg *dummy)
+{
+	char* tmp = colorname[0];
+	colorname[0] = colorname[7];
+	colorname[7] = tmp;
+	tmp = colorname[8];
+	colorname[8] = colorname[15];
+	colorname[15] = tmp;
+	xloadcols();
+	redraw();
 }
 
 int
